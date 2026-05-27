@@ -2,7 +2,12 @@ import { colors, radius } from "@/constants/theme";
 import { CustomButtonProps } from "@/types";
 import { verticalScale } from "@/utils/styling";
 import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const Button = ({
   style,
@@ -14,6 +19,7 @@ const Button = ({
     return (
       <View style={[styles.button, style, { backgroundColor: "transparent" }]}>
         {/* loading */}
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
