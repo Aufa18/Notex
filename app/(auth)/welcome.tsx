@@ -6,7 +6,7 @@ import { verticalScale } from "@/utils/styling";
 import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import Animated, { Easing, FadeIn, FadeInDown } from "react-native-reanimated";
+import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
 
 const Welcome = () => {
   const router = useRouter();
@@ -24,7 +24,7 @@ const Welcome = () => {
           </TouchableOpacity>
 
           <Animated.Image
-            entering={FadeIn.duration(600)}
+            entering={FadeIn.duration(800)}
             source={require("../../assets/images/welcome.png")}
             style={styles.welcomeImage}
             resizeMode="contain"
@@ -34,41 +34,34 @@ const Welcome = () => {
         {/* FOOTER */}
         <View style={styles.footer}>
           <Animated.View
-            entering={FadeInDown.duration(1600).easing(Easing.out(Easing.exp))}
+            entering={FadeInDown.delay(600).springify()}
             style={{ alignItems: "center" }}
           >
             <Typo size={30} fontWeight={"800"}>
-              Always take control
-            </Typo>
-            <Typo size={30} fontWeight={"800"}>
-              Always take control
+              Kontrol Keuangan Anda
             </Typo>
           </Animated.View>
 
           <Animated.View
-            entering={FadeInDown.duration(1600)
-              .delay(200)
-              .easing(Easing.out(Easing.exp))}
+            entering={FadeInDown.delay(800).springify()}
             style={{ alignItems: "center", gap: 2 }}
           >
-            <Typo size={17} color={colors.textLight}>
-              Finances must be arranged to set a better
+            <Typo size={16} color={colors.textLight}>
+              Pencatatan terbaik kesehatan ekonomi digital
             </Typo>
-            <Typo size={17} color={colors.textLight}>
-              lifestyle in future
+            <Typo size={16} color={colors.textLight}>
+              masa depan cerah
             </Typo>
           </Animated.View>
 
           {/* button */}
           <Animated.View
-            entering={FadeInDown.duration(1600)
-              .delay(300)
-              .easing(Easing.out(Easing.exp))}
+            entering={FadeInDown.delay(200).springify()}
             style={styles.buttonContainer}
           >
             <Button onPress={() => router.push("/(auth)/register")}>
               <Typo size={22} color={colors.neutral900} fontWeight={"600"}>
-                Get Started
+                Registrasi
               </Typo>
             </Button>
           </Animated.View>

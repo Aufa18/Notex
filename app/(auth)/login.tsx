@@ -47,13 +47,13 @@ const Login = () => {
 
         {/* form */}
         <View style={styles.form}>
-          <Typo size={16} color={colors.textLighter}>
-            Login now to track all your expenses
+          <Typo size={14} color={colors.textLighter}>
+            Login sekarang untuk mencatat pengeluaran anda
           </Typo>
 
           {/* input */}
           <Input
-            placeholder="Enter your email"
+            placeholder="Masukkan email anda"
             onChangeText={(value) => (emailRef.current = value)}
             icon={
               <Icons.AtIcon
@@ -64,7 +64,7 @@ const Login = () => {
             }
           />
           <Input
-            placeholder="Enter your password"
+            placeholder="Masukkan password anda"
             secureTextEntry
             onChangeText={(value) => (passwordRef.current = value)}
             icon={
@@ -77,7 +77,7 @@ const Login = () => {
           />
 
           <Typo size={14} color={colors.text} style={{ alignSelf: "flex-end" }}>
-            Forgot Password?
+            Lupa Password?
           </Typo>
 
           <Button loading={isLoading} onPress={handleSubmit}>
@@ -89,7 +89,7 @@ const Login = () => {
 
         {/* footer */}
         <View style={styles.footer}>
-          <Typo size={15}>Don't have an account?</Typo>
+          <Typo size={15}>Belum punya akun?</Typo>
           <Pressable onPress={() => router.navigate("/(auth)/register")}>
             <Typo size={15} fontWeight={"700"} color={colors.primary}>
               Sign up

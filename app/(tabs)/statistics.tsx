@@ -1,96 +1,80 @@
 import Header from "@/components/Header";
 import Loading from "@/components/Loading";
 import ScreenWrapper from "@/components/ScreenWrapper";
+import TransactionList from "@/components/TransactionList";
 import { colors, radius, spacingX, spacingY } from "@/constants/theme";
+import { useAuth } from "@/contexts/authContext";
+import {
+  fetchMonthlyStats,
+  fetchWeeklyStats,
+  fetchYearlyStats,
+} from "@/services/transactionService";
+import { formatCompactRupiah } from "@/utils/common";
 import { scale, verticalScale } from "@/utils/styling";
 import SegmentedControl from "@react-native-segmented-control/segmented-control";
-import React, { useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useCallback, useState } from "react";
+import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { BarChart } from "react-native-gifted-charts";
 
 const Statistics = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [chartData, setChartData] = useState([
-    {
-      value: 40,
-      label: "Mon",
-      spacing: scale(4),
-      labelWidth: scale(30),
-      frontColor: colors.primary,
-      // topLabelComponent: () => (
-      //   <Typo size={10} style={{ marginBottom: 4 }} fontWeight={'bold'}>
-      //     50
-      //   </Typo>
-      // ),
-    },
-    {
-      value: 20,
-      frontColor: colors.rose,
-    },
-    {
-      value: 50,
-      label: "Tue",
-      spacing: scale(4),
-      labelWidth: scale(30),
-      frontColor: colors.primary,
-    },
-    { value: 40, frontColor: colors.rose },
-    {
-      value: 75,
-      label: "Wed",
-      spacing: scale(4),
-      labelWidth: scale(30),
-      frontColor: colors.primary,
-    },
-    { value: 25, frontColor: colors.rose },
-    {
-      value: 30,
-      label: "Thu",
-      spacing: scale(4),
-      labelWidth: scale(30),
-      frontColor: colors.primary,
-    },
-    { value: 20, frontColor: colors.rose },
-    {
-      value: 60,
-      label: "Fri",
-      spacing: scale(4),
-      labelWidth: scale(30),
-      frontColor: colors.primary,
-    },
-    { value: 40, frontColor: colors.rose },
-    {
-      value: 65,
-      label: "Sat",
-      spacing: scale(4),
-      labelWidth: scale(30),
-      frontColor: colors.primary,
-    },
-    { value: 30, frontColor: colors.rose },
-    {
-      value: 65,
-      label: "Sun",
-      spacing: scale(4),
-      labelWidth: scale(30),
-      frontColor: colors.primary,
-    },
-    { value: 30, frontColor: colors.rose },
-    // {
-    //   value: 65,
-    //   label: 'Sun',
-    //   spacing: scale(4),
-    //   labelWidth: scale(30),
-    //   frontColor: colors.primary,
-    // },
-    // { value: 30, frontColor: colors.rose },
-  ]);
+  const { user } = useAuth();
+  const [chartData, setChartData] = useState([]);
   const [chartLoading, setChartLoading] = useState(false);
+  const [transactions, setTransactions] = useState([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (activeIndex == 0) {
+        getWeeklyStats();
+      } else if (activeIndex == 1) {
+        getMonthlyStats();
+      } else if (activeIndex == 2) {
+        getYearlyStats();
+      }
+    }, [activeIndex, user?.uid]), // Akan otomatis fetch ulang jika tab diubah ATAU layar kembali difokuskan
+  );
+
+  const getWeeklyStats = async () => {
+    setChartLoading(true);
+    let res = await fetchWeeklyStats(user?.uid as string);
+    setChartLoading(false);
+    if (res.success) {
+      setChartData(res?.data?.stats);
+      setTransactions(res?.data?.transactions);
+    } else {
+      Alert.alert("Error", res.msg);
+    }
+  };
+  const getMonthlyStats = async () => {
+    setChartLoading(true);
+    let res = await fetchMonthlyStats(user?.uid as string);
+    setChartLoading(false);
+    if (res.success) {
+      setChartData(res?.data?.stats);
+      setTransactions(res?.data?.transactions);
+    } else {
+      Alert.alert("Error", res.msg);
+    }
+  };
+  const getYearlyStats = async () => {
+    setChartLoading(true);
+    let res = await fetchYearlyStats(user?.uid as string);
+    setChartLoading(false);
+    if (res.success) {
+      setChartData(res?.data?.stats);
+      setTransactions(res?.data?.transactions);
+    } else {
+      Alert.alert("Error", res.msg);
+    }
+  };
 
   return (
     <ScreenWrapper>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Header title="Statistics" />
+          <Header title="Statistik" />
         </View>
 
         <ScrollView
@@ -102,7 +86,7 @@ const Statistics = () => {
           showsVerticalScrollIndicator={false}
         >
           <SegmentedControl
-            values={["Weekly", "Monthly", "Yearly"]}
+            values={["Mingguan", "Bulanan", "Tahunan"]}
             selectedIndex={activeIndex}
             onChange={(event) => {
               setActiveIndex(event.nativeEvent.selectedSegmentIndex);
@@ -124,20 +108,25 @@ const Statistics = () => {
                 roundedTop
                 roundedBottom
                 hideRules
-                yAxisLabelPrefix="Rp"
+                yAxisLabelPrefix="Rp "
                 yAxisThickness={0}
                 xAxisThickness={0}
                 yAxisLabelWidth={
-                  [1, 2].includes(activeIndex) ? scale(38) : scale(35)
+                  [1, 2].includes(activeIndex) ? scale(45) : scale(42)
                 }
+                formatYLabel={(label) => formatCompactRupiah(Number(label))}
                 // hideYAxisText
-                yAxisTextStyle={{ color: colors.neutral350 }}
+                yAxisTextStyle={{
+                  color: colors.neutral350,
+                  fontSize: verticalScale(10),
+                }}
                 xAxisLabelTextStyle={{
                   color: colors.neutral350,
                   fontSize: verticalScale(12),
                 }}
                 noOfSections={3}
                 minHeight={5}
+                scrollToEnd={true}
                 // isAnimated={true}
                 // animationDuration={1000}
                 // maxValue={1000}
@@ -151,6 +140,15 @@ const Statistics = () => {
                 <Loading color={colors.white} />
               </View>
             )}
+          </View>
+
+          {/* transactions */}
+          <View>
+            <TransactionList
+              title="Transaksi"
+              emptyListMessage="Transaksi tidak ditemukan"
+              data={transactions}
+            />
           </View>
         </ScrollView>
       </View>

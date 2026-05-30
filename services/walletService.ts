@@ -47,7 +47,6 @@ export const createOrUpdateWallet = async (
     await setDoc(walletRef, walletToSave, { merge: true }); // updates only the data provided
     return { success: true, data: { ...walletToSave, id: walletRef.id } };
   } catch (error: any) {
-    console.log("Error creating ur updating wallet: ", error);
     return { success: false, msg: error.message };
   }
 };
@@ -61,7 +60,6 @@ export const deleteWallet = async (walletId: string): Promise<ResponseType> => {
 
     return { success: true, msg: "Wallet deleted successfully" };
   } catch (err: any) {
-    console.log("Error deleting wallet: ", err);
     return { success: false, msg: err.message };
   }
 };
@@ -91,15 +89,10 @@ export const deleteTransactionsByWalletId = async (
       });
 
       await batch.commit();
-
-      console.log(
-        `${transactionsSnapshot.size} transactions deleted in this batch`,
-      );
     }
 
     return { success: true, msg: "All transactions deleted successfully" };
   } catch (err: any) {
-    console.log("Error deleting wallet: ", err);
     return { success: false, msg: err.message };
   }
 };

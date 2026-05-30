@@ -13,7 +13,7 @@ import { signOut } from "firebase/auth";
 import * as Icons from "phosphor-react-native";
 import React from "react";
 import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
-import Animated, { Easing, FadeInDown } from "react-native-reanimated";
+import Animated, { FadeInDown } from "react-native-reanimated";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -54,7 +54,6 @@ const Profile = () => {
     Alert.alert("Confirm", "Are you sure you want to logout?", [
       {
         text: "Cancel",
-        onPress: () => console.log("cancel logout"),
         style: "cancel",
       },
       {
@@ -106,9 +105,7 @@ const Profile = () => {
             return (
               <Animated.View
                 key={index.toString()}
-                entering={FadeInDown.duration(1600)
-                  .delay(index * 50)
-                  .easing(Easing.out(Easing.exp))}
+                entering={FadeInDown.delay(index * 100).springify()}
                 style={styles.listItem}
               >
                 <TouchableOpacity

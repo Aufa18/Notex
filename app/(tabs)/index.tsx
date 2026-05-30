@@ -27,7 +27,7 @@ const Home = () => {
   const {
     data: recentTransactions,
     error,
-    loading: transactionLoading,
+    loading: transactionsLoading,
   } = useFetchData<TransactionType>("transactions", constraint);
 
   return (
@@ -45,7 +45,10 @@ const Home = () => {
           </View>
 
           {/* search */}
-          <TouchableOpacity style={styles.searchIcon}>
+          <TouchableOpacity
+            onPress={() => router.push("/(modals)/searchModal")}
+            style={styles.searchIcon}
+          >
             <Icons.MagnifyingGlassIcon
               size={verticalScale(22)}
               color={colors.neutral200}
@@ -65,7 +68,7 @@ const Home = () => {
 
           <TransactionList
             data={recentTransactions}
-            loading={transactionLoading}
+            loading={transactionsLoading}
             emptyListMessage="Transaksi belum ditambahkan!"
             title="Transaksi Terkini"
           />

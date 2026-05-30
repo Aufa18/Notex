@@ -3,7 +3,7 @@ import {
   collection,
   onSnapshot,
   query,
-  QueryConstraint
+  QueryConstraint,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
@@ -34,7 +34,6 @@ const useFetchData = <T>(
         setLoading(false);
       },
       (err) => {
-        console.log("Error fetching data: ", err);
         setError(err.message);
         setLoading(false);
       },

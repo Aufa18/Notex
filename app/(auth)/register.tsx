@@ -31,7 +31,6 @@ const Register = () => {
       nameRef.current,
     );
     setIsLoading(false);
-    console.log("register result: ", res);
     if (!res.success) {
       Alert.alert("Sign up", res.msg);
     }
@@ -54,12 +53,12 @@ const Register = () => {
         {/* form */}
         <View style={styles.form}>
           <Typo size={16} color={colors.textLighter}>
-            Create an account to track your expenses
+            Buat akun untuk mencatat pengeluaran anda
           </Typo>
 
           {/* input */}
           <Input
-            placeholder="Enter your name"
+            placeholder="Masukkan nama anda"
             onChangeText={(value) => (nameRef.current = value)}
             icon={
               <Icons.UserIcon
@@ -70,7 +69,7 @@ const Register = () => {
             }
           />
           <Input
-            placeholder="Enter your email"
+            placeholder="Masukkan email anda"
             onChangeText={(value) => (emailRef.current = value)}
             icon={
               <Icons.AtIcon
@@ -81,7 +80,7 @@ const Register = () => {
             }
           />
           <Input
-            placeholder="Enter your password"
+            placeholder="Masukkan password anda"
             secureTextEntry
             onChangeText={(value) => (passwordRef.current = value)}
             icon={
@@ -102,7 +101,7 @@ const Register = () => {
 
         {/* footer */}
         <View style={styles.footer}>
-          <Typo size={15}>Already have an account?</Typo>
+          <Typo size={15}>Sudah punya akun?</Typo>
           <Pressable onPress={() => router.navigate("/(auth)/login")}>
             <Typo size={15} fontWeight={"700"} color={colors.primary}>
               Login

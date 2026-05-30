@@ -54,7 +54,6 @@ const WalletModal = () => {
     setLoading(true);
     const res = await createOrUpdateWallet(data);
     setLoading(false);
-    console.log("result: ", res);
     if (res.success) {
       router.back();
     } else {
@@ -81,7 +80,6 @@ const WalletModal = () => {
       [
         {
           text: "Cancel",
-          onPress: () => console.log("cancel delete"),
           style: "cancel",
         },
         {
